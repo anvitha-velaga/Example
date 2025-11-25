@@ -1,0 +1,130 @@
+/* Container for all admin pages */
+.admin-page-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background-color: #eef3fb; /* soft blueish background */
+  padding: 20px;
+}
+
+/* Header */
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f1f1; /* soft blue header */
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.admin-page-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #ffffff;
+}
+
+.logout-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #c9390d; /* deep blue */
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background-color: #e49d87; /* lighter blue on hover */
+}
+
+/* Info messages */
+.info-msg {
+  text-align: center;
+  color: #1e40af; /* dark blue */
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+.approve-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b82f6; /* blue */
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.approve-btn:hover {
+  background-color: #2563eb; /* darker blue on hover */
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+table th,
+table td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: #1e3a8a; /* deep blue header */
+  color: white;
+  font-weight: 600;
+}
+
+table tr:nth-child(even) {
+  background-color: #f1f5f9; /* light blue row */
+}
+
+table tr:hover {
+  background-color: #dbeafe; /* hover blue */
+}
+.dashboard-nav .link-nav {
+  margin-right: 15px;
+  color: #1b09c2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.dashboard-nav .link-nav:hover {
+  color: #00010a;
+  text-decoration: underline;
+}
+
+/* Page titles */
+.admin-page-container h2 {
+  text-align: center;
+  color: #1e40af; /* title blue */
+  margin-bottom: 15px;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .approve-btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  table th, table td {
+    padding: 8px 6px;
+  }
+}

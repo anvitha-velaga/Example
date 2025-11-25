@@ -1,0 +1,13 @@
+/* Apply to the whole page */
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #eef3fb !important;  /* Same light blue as dashboard */
+  font-family: Arial, sans-serif;
+}
+
+/* Optional: fix container width and centering issues */
+#root {
+  min-height: 100vh;
+  background: #eef3fb !important;
+}
