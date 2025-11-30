@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../axiosConfig";
 import "./AdminDashboard.css";
+import DashboardHeader from "./DashboardHeader";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const AdminDashboard = () => {
     fetchReports();
   }, []);
 
+  
   const fetchReports = async () => {
     try {
       const fbRes = await api.get("Feedback/all-feedbacks");
@@ -54,18 +56,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h2>Welcome, {user}</h2>
-        <nav className="dashboard-nav">
-          <Link to="/AllUsers" className="link-nav">All Users</Link>
-          <Link to="/PendingFeedbacks" className="link-nav">Pending Feedbacks</Link>
-          <Link to="/ApproveFeedbackbyId" className="link-nav">Approve Feedbacks by Id</Link>
-        </nav>
-        <button onClick={handleLogout} className="logout-btn">
-          Logout
-        </button>
-      </header>
-
+  <DashboardHeader username={user} onLogout={handleLogout} />
       <main className="dashboard-content">
         <h3 className="reports-title">Reports</h3>
         <div className="reports-grid">

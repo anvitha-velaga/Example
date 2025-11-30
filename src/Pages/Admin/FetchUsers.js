@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../../axiosConfig";
 import { useNavigate } from "react-router-dom";
-import "./AdminPages.css";
+import "./AdminDashboard.css";
+import DashboardHeader from "./DashboardHeader";
 
 const FetchUsers = () => {
   const navigate = useNavigate();
@@ -27,21 +28,15 @@ const FetchUsers = () => {
       setLoading(false);
     }
   };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/UserLogin");
   };
-
   if (loading) return <p style={{ textAlign: "center" }}>Loading users...</p>;
   if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
-
   return (
-    <div className="admin-page-container">
-      <header className="admin-page-header">
-        <h2>Welcome, {user}</h2>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
-      </header>
+    <div className="dashboard-container">
+      <DashboardHeader username={user} onLogout={handleLogout} />
       <h2>All Users</h2>
       {users.length === 0 ? (
         <p>No users found</p>

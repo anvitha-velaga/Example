@@ -1,22 +1,20 @@
-/* General dashboard container */
-.dashboard-container {
+ .dashboard-container {
   font-family: 'Segoe UI';
   min-height: 100vh;
   background-color: #e3f2fd; 
   color: #1b2733;
   padding: 20px;
-}
+} 
 
-/* Header */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1976d2; /* blue header */
-  padding: 15px 25px;
-  border-radius: 8px;
-  color: white;
-  margin-bottom: 20px;
+  background-color: #1976d2; 
+  padding: 15px 25px; 
+   border-radius: 8px;
+   color: white; 
+  margin-bottom: 20px; 
 }
 
 .dashboard-header h2 {
@@ -25,15 +23,15 @@
 }
 
 .dashboard-nav .link-nav {
-  margin-right: 15px;
-  color: #1b09c2;
+ margin: 0 32px !important;
+  color: #0d0461 !important;
   text-decoration: none;
   font-weight: 600;
 }
 
 .dashboard-nav .link-nav:hover {
-  color: #00010a;
-  text-decoration: underline;
+  color: #00010a !important;
+  text-decoration: underline !important;
 }
 
 .logout-btn {
@@ -47,20 +45,18 @@
 }
 
 .logout-btn:hover {
-  background-color: #0d47a1;
+  background-color: #d16767 !important;
 }
 
-/* Main content */
 .dashboard-content {
   padding: 20px 0;
 }
 
 .reports-title {
   margin-bottom: 15px;
-  color: #0d47a1;
+  color:  #29489c;
 }
 
-/* Reports grid */
 .reports-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -69,7 +65,7 @@
 
 .report-card {
   min-height: 120px;
-  background-color: #688ddd;
+  background-color:#d39b48;
   border-radius: 8px;
   padding: 20px;
   text-align: center;
@@ -99,13 +95,52 @@
   color: #bbdefb !important;
 }
 
-.report-card-link:hover .report-card {
+ .report-card-link:hover .report-card {
   transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+} 
+
+/* Buttons */
+.approve-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b82f6; /* blue */
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+.approve-btn:hover {
+  background-color: #2563eb; 
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+table th,
+table td {
+  padding: 10px 12px;
+  border: 2px solid #ccc; 
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  border-radius: 6px;
+  
+}
+
+table th {
+  font-weight: 1600;
+  color: #031c44 !important
+}
+
+ @media (max-width: 768px) {
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
@@ -118,5 +153,5 @@
   .dashboard-nav .link-nav {
     margin: 5px 0;
   }
-}
+} 
 

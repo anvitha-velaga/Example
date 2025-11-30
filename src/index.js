@@ -4,9 +4,7 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode> {/*for detecting errors, missing stmnts*/}
-    <App />   {/* app component app.js exporting */}
+  <React.StrictMode> 
+    <App />   
   </React.StrictMode>
 );
-
-

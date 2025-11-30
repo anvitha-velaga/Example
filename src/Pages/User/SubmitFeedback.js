@@ -1,8 +1,35 @@
-// src/Pages/User/SubmitFeedback.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SubmitFeedback.css";
-import { Link } from "react-router-dom";
+import DashboardHeader from "./DashboardHeader";
+import api from "../../axiosConfig";
+
+//star
+const StarRating = ({ rating, setRating }) => {
+  const [hover, setHover] = useState(0);
+
+  return (
+    <div style={{ display: "flex", gap: "6px", margin: "8px 0" }}>
+      {[1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          onClick={() => setRating(star)}
+          onMouseEnter={() => setHover(star)}
+          onMouseLeave={() => setHover(0)}
+          style={{
+            fontSize: "28px",
+            cursor: "pointer",
+            color: star <= (hover || rating) ? "#b11bd6ff" : "#ccc",
+            transition: "color 0.2s",
+            userSelect: "none",
+          }}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  );
+};
 
 export default function SubmitFeedback() {
   const navigate = useNavigate();
@@ -12,22 +39,12 @@ export default function SubmitFeedback() {
   const [openQueries, setOpenQueries] = useState("");
   const [linesOfCode, setLinesOfCode] = useState("");
   const [rating, setRating] = useState(1);
-  const [user, setUser] = useState("");
+  const users = localStorage.getItem("userName");
 
-  // Fetch username from token/localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/UserLogin");
-      return;
-    }
-
-    // Decode token to get username
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    const username =
-      payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/name"];
-    setUser(username);
-  }, [navigate]);
+    if (!token) navigate("/UserLogin");
+  }, []); 
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -36,13 +53,9 @@ export default function SubmitFeedback() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem("token"); 
-    if (!token) {
-      alert("You must be logged in to submit feedback.");
-      return;
-    }
-
+    const token = localStorage.getItem("token");
+    if (!token) navigate("/UserLogin");
+  
     const feedbackData = {
       mentorName,
       week,
@@ -53,24 +66,9 @@ export default function SubmitFeedback() {
     };
 
     try {
-      const res = await fetch("https://localhost:7079/api/Feedback/submit-feedback", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify(feedbackData),
-      });
-
-      const text = await res.text();
-
-      if (!res.ok) {
-        throw new Error(text || "Failed to submit feedback");
-      }
-
+      const response = await api.post("/Feedback/submit-feedback", feedbackData);
       alert("Feedback submitted successfully!");
-
-      // Reset form
+//resset form after submitting
       setMentorName("");
       setWeek("");
       setQueries("");
@@ -78,27 +76,27 @@ export default function SubmitFeedback() {
       setLinesOfCode("");
       setRating(1);
 
-    } catch (err) {
-      console.error("Submit error:", err);
-      alert("Error submitting feedback. Check console.");
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data || error.message; 
+      console.error("Feedback submission failed:", error);
+      
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        alert("Authentication failed. Please log in again.");
+        handleLogout(); 
+      } else {
+        alert(`Error submitting feedback: ${errorMessage}`);
+      }
     }
   };
-   const users = localStorage.getItem("userName");
 
   return (
     <div className="form-container-wrapper">
-      {/* Header identical to ViewStatus */}
-      <header className="form-header">
-        <h2>Welcome, {users}</h2>
-        <Link to="/SubmitFeedback" className="link-nav">Submit new feedback</Link>
-        <Link to="/ViewStatus" className="link-nav">View Recents</Link>
-        <Link to="/SubmittedFeedbacks" className="link-nav">Submitted Feedbacks</Link>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-      </header>
+      <DashboardHeader username={users} onLogout={handleLogout} />
 
       <div className="form-container">
         <h2 className="form-title">
-          Freshers 2025 - AppDev - Feedback survey about your Mentor
+          Freshers 2025 - AppDev - Feedback survey about your Mentor 🌟
         </h2>
 
         <form onSubmit={handleSubmit}>
@@ -111,44 +109,51 @@ export default function SubmitFeedback() {
           />
 
           <label>Choose the Week you are providing review for</label>
-          <select value={week} onChange={(e) => setWeek(e.target.value)} required>
+          <select
+            value={week}
+            onChange={(e) => setWeek(e.target.value)}
+            required
+          >
             <option value="">Select Week</option>
             {Array.from({ length: 12 }, (_, i) => (
-              <option key={i} value={`Week ${i + 1}`}>Week {i + 1}</option>
+              <option key={i} value={`Week ${i + 1}`}>
+                Week {i + 1}
+              </option>
             ))}
           </select>
 
           <label>Did your mentor answer all your questions this week?</label>
-          <select value={queries} onChange={(e) => setQueries(e.target.value)} required>
+          <select
+            value={queries}
+            onChange={(e) => setQueries(e.target.value)}
+            required
+          >
             <option value="">-- Select --</option>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
 
           <label>If you have open queries, describe them</label>
-          <input
+          <textarea
             type="text"
             value={openQueries}
             onChange={(e) => setOpenQueries(e.target.value)}
             placeholder="Type NA if no open queries"
+           rows="4"
+            required
           />
 
           <label>How many lines of code did you write this week?</label>
           <input
-            type="text"
+            type="number"
             value={linesOfCode}
             onChange={(e) => setLinesOfCode(e.target.value)}
+            required
+            min={0}
           />
 
           <label>Overall rating for your mentor</label>
-          <select value={rating} onChange={(e) => setRating(e.target.value)}>
-            <option value={1}>⭐</option>
-            <option value={2}>⭐⭐</option>
-            <option value={3}>⭐⭐⭐</option>
-            <option value={4}>⭐⭐⭐⭐</option>
-            <option value={5}>⭐⭐⭐⭐⭐</option>
-          </select>
-
+          <StarRating rating={rating} setRating={setRating} />
           <button type="submit">Submit Feedback</button>
         </form>
       </div>

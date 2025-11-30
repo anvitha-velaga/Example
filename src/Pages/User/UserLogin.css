@@ -1,11 +1,3 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #e0f2fe; /* very light blue */
-  color: #1e3a8a; /* dark blue text */
-}
-
 .login-container {
   display: flex;
   justify-content: center;
@@ -14,7 +6,7 @@ body {
 }
 
 .login-box {
-  background-color: #ffffff; /* white box */
+  background-color: #ffffff;
   padding: 30px 40px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -34,9 +26,9 @@ body {
   width: 100%;
   padding: 10px;
   margin: 8px 0 15px 0;
-  border: 1px solid #93c5fd; /* soft blue border */
+  border: 1px solid #93c5fd;
   border-radius: 5px;
-  background-color: #f0f9ff; /* very light blue background */
+  background-color: #f0f9ff;
   color: #1e3a8a; /* dark blue text */
   font-size: 16px;
 }
@@ -44,8 +36,8 @@ body {
 .login-box input:focus,
 .login-box select:focus {
   outline: none;
-  border-color: #3b82f6; /* bright blue on focus */
-  box-shadow: 0 0 5px rgba(59,130,246,0.4);
+  border-color: #085feb; 
+   box-shadow: 0 0 12px rgba(8, 95, 235, 0.8);
 }
 
 .primary-btn,
@@ -57,29 +49,26 @@ body {
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .primary-btn {
-  background-color: #3b82f6; /* bright blue */
+  background-color: #3b82f6; 
   color: white;
 }
 
 .primary-btn:hover {
-  background-color: #2563eb; /* darker blue on hover */
+  background-color: #2563eb; 
 }
-
 .secondary-btn {
-  background-color: #93c5fd; /* soft blue */
+  background-color: #93c5fd; 
   color: #1e3a8a;
 }
 
 .secondary-btn:hover {
-  background-color: #60a5fa; /* slightly darker on hover */
-}
+  background-color: #60a5fa; }
 
 .error-msg {
-  color: #b91c1c; /* red for error */
+  color: #b91c1c; 
   text-align: center;
   margin-bottom: 10px;
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../../axiosConfig";
 import { useNavigate } from "react-router-dom";
-import "./AdminPages.css"; // unified CSS
-import { Link } from "react-router-dom";
+import "./AdminDashboard.css";
+import DashboardHeader from "./DashboardHeader";
 
 const AllFeedbacks = () => {
   const navigate = useNavigate();
@@ -25,30 +25,19 @@ const AllFeedbacks = () => {
       setLoading(false);
     }
   };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/UserLogin");
   };
-
-  const adminName = localStorage.getItem("userName");
+  const user = localStorage.getItem("userName");
 
   if (loading) return <p className="center-text">Loading feedbacks...</p>;
   if (error) return <p className="center-text error-text">{error}</p>;
 
   return (
-    <div className="admin-page-container">
-      <header className="admin-page-header">
-        <h2>Welcome, {adminName}</h2>
-        <Link to="/AllUsers" className="link-nav">All Users</Link>
-        <Link to="/PendingFeedbacks" className="link-nav">Approve Feedbacks</Link>
-        <Link to="/ApproveFeedbackById" className="link-nav">Approve by ID</Link>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-        
-      </header>
-
+    <div className="dashboard-container">
+      <DashboardHeader username={user} onLogout={handleLogout} />
       <h2 className="page-title">All Feedbacks</h2>
-
       {feedbacks.length === 0 ? (
         <p className="center-text">No feedbacks found</p>
       ) : (
@@ -72,7 +61,10 @@ const AllFeedbacks = () => {
                   <td>{f.mentorName}</td>
                   <td>{f.week}</td>
                   <td>{f.rating}</td>
-                  <td>{f.status}</td>
+                  {/* <td>{f.status}</td> */}
+                  <td style={{color:f.status === "Pending"? "red": f.status === "Approved"? "green": "black",fontWeight: "600"}}>
+                  {f.status === "Pending"? `⏳ ${f.status}`: f.status === "Approved"? `✅ ${f.status}`: f.status}
+                  </td>
                   <td>{f.linesOfCode}</td>
                   <td>{f.submittedOn ? new Date(f.submittedOn).toLocaleDateString() : "N/A"}</td>
                 </tr>
@@ -84,6 +76,5 @@ const AllFeedbacks = () => {
     </div>
   );
 };
-
 export default AllFeedbacks;
 

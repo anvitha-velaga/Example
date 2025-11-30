@@ -23,10 +23,9 @@ const Login = () => {
       return;
     }
 
-    // Save token for protected routes
     localStorage.setItem("token", user.token);
     localStorage.setItem("userName", user.userName);
-    // Navigate based on role directly from API response
+    //navigate based on role 
     const userRole = user.role;
     if (userRole === "Admin") navigate("/AdminDashboard");
     else navigate("/UserDashboard");
@@ -39,8 +38,8 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-box" onSubmit={handleLogin}>
+       <h2 className="login-title">Rate-Right</h2>
         <h2 className="login-title">Login</h2>
-
         <input
           type="text"
           placeholder="Enter Username"
@@ -48,7 +47,6 @@ const Login = () => {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-
         <input
           type="password"
           placeholder="Enter Password"
@@ -57,9 +55,7 @@ const Login = () => {
           required
         />
         {msg && <p className="error-msg">{msg}</p>}
-
        <button type="submit" className="primary-btn">Login</button>
-
         <button
           type="button"
           className="secondary-btn"
@@ -71,5 +67,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

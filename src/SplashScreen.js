@@ -10,7 +10,7 @@ const SplashScreen = () => {
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, []);
 
   return (
     <div
@@ -21,7 +21,7 @@ const SplashScreen = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f8f9fa",
+        backgroundColor: "#eef3fb",
         fontFamily: "Arial",
       }}
     >
@@ -38,7 +38,7 @@ const SplashScreen = () => {
             marginBottom: "10px",
           }}
         >
-          Welcome to RATE RIGHT
+          Welcome to RATE RIGHT 
         </h1>
 
         <p

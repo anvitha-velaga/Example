@@ -1,24 +1,18 @@
-// src/Pages/User/SubmittedFeedbacks.js
 import React, { useEffect, useState } from "react";
 import api from "../../axiosConfig";
 import { useNavigate } from "react-router-dom";
-import "./UserPages.css";
-import { Link } from "react-router-dom";
+import "./UserDashboard.css";
+import DashboardHeader from "./DashboardHeader";
 
 const SubmittedFeedbacks = () => {
   const navigate = useNavigate();
   const [feedbacks, setFeedbacks] = useState([]);
-  const [user, setUser] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/UserLogin");
-
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    setUser(payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/name"]);
-
     fetchFeedbacks();
-  }, [navigate]);
+  }, []);
 
   const fetchFeedbacks = async () => {
     try {
@@ -35,16 +29,10 @@ const SubmittedFeedbacks = () => {
 
 
   return (
-    <div className="page-container">
-      <header className="page-header">
-        <h2>Welcome, {users}</h2>
-        <Link to="/SubmitFeedback" className="link-nav">Submit new feedback</Link>
-        <Link to="/ViewStatus" className="link-nav">View Recents</Link>
-        <Link to="/SubmittedFeedbacks" className="link-nav">Submitted Feedbacks</Link>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-      </header>
+    <div className="dashboard-container">
+    <DashboardHeader username={users} onLogout={handleLogout} />
 
-      <div className="content-container">
+      <div className="dashboard-content">
         <h3>All Submitted Feedbacks</h3>
         <div className="table-container">
           {feedbacks.length === 0 ? (
@@ -56,7 +44,7 @@ const SubmittedFeedbacks = () => {
                   <th>Mentor</th>
                   <th>Week</th>
                   <th>Submitted On</th>
-                  <th>Status</th>
+                  <th>Status </th>
                 </tr>
               </thead>
               <tbody>
@@ -65,7 +53,27 @@ const SubmittedFeedbacks = () => {
                     <td>{f.mentorName}</td>
                     <td>{f.week}</td>
                     <td>{f.submittedOn ? new Date(f.submittedOn).toLocaleDateString() : "N/A"}</td>
-                    <td>{f.status}</td>
+                    {/* <td>{f.status}</td> */}
+                    <td className="status"
+                        style={{
+                        color:
+                          f.status === "Pending"
+                            ? "red"
+                            : f.status === "Approved"
+                            ? "green"
+                            : "black",
+                        fontWeight: "600"
+                      }}
+                    >
+                      {/* {f.status} */}
+                      
+                      {f.status === "Pending"
+                          ? `⏳ ${f.status}`
+                          : f.status === "Approved"
+                          ? `✅ ${f.status}`
+                          : f.status}
+
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -1,8 +1,8 @@
-// src/Pages/Admin/ApprovedFeedbacks.js
 import React, { useEffect, useState } from "react";
 import api from "../../axiosConfig";
 import { useNavigate } from "react-router-dom";
-import "./AdminPages.css"; 
+import "./AdminDashboard.css";
+import DashboardHeader from "./DashboardHeader";
 
 const ApprovedFeedbacks = () => {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ const ApprovedFeedbacks = () => {
   const fetchApprovedFeedbacks = async () => {
     try {
       const res = await api.get("Feedback/all-feedbacks");
-      // Use lowercase property 'status'
       const approved = res.data.filter(f => f.status.toLowerCase() === "approved");
       setFeedbacks(approved);
       setLoading(false);
@@ -28,7 +27,6 @@ const ApprovedFeedbacks = () => {
       setLoading(false);
     }
   };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/UserLogin");
@@ -38,14 +36,9 @@ const ApprovedFeedbacks = () => {
   if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
 
   return (
-    <div className="admin-page-container">
-      <header className="admin-page-header">
-        <h2>Welcome, {user}</h2>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
-      </header>
-
+    <div className="dashboard-container">
+    <DashboardHeader username={user} onLogout={handleLogout} />
       <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Approved Feedbacks</h2>
-
       {feedbacks.length === 0 ? (
         <p style={{ textAlign: "center" }}>No approved feedbacks</p>
       ) : (

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import api from "../../axiosConfig";
-import "./AdminPages.css";
+import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import DashboardHeader from "./DashboardHeader";
 
-const PendingFeedbacks = () => {
+const ManagePendingFeedbacks = () => {
   const navigate = useNavigate();
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,40 +33,51 @@ const PendingFeedbacks = () => {
     navigate("/UserLogin");
   };
 
+  // Approve All
   const handleApproveAll = async () => {
     try {
       const res = await api.patch("Feedback/approve-all");
-      setMsg(res.data);
+      setMsg(res.data || "All feedbacks approved!");
       fetchPendingFeedbacks();
     } catch (err) {
       console.error(err);
-      setMsg("Failed to approve feedbacks");
+      setMsg("Failed to approve all feedbacks");
+    }
+  };
+
+
+  const handleApprove = async (id) => {
+    try {
+      await api.patch(`Feedback/approve/${id}`);
+      setMsg(`Feedback #${id} approved`);
+      fetchPendingFeedbacks();
+    } catch (err) {
+      console.error(err);
+      setMsg(`Failed to approve feedback #${id}`);
     }
   };
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading pending feedbacks...</p>;
   if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
 
-  const users = localStorage.getItem("userName");
+  const user = localStorage.getItem("userName");
 
   return (
-    <div className="admin-page-container">
-      <header className="admin-page-header">
-        <h2>Welcome, {users}</h2>
-        <Link to="/AllUsers" className="link-nav">All Users</Link>
-        <Link to="/PendingFeedbacks" className="link-nav">Approve Feedbacks</Link>
-        <Link to="/ApproveFeedbackById" className="link-nav">Approve by ID</Link>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-      </header>
+    <div className="dashboard-container">
+      <DashboardHeader username={user} onLogout={handleLogout} />
 
       <h2>Pending Feedbacks</h2>
+
       {msg && <p className="info-msg">{msg}</p>}
 
       {feedbacks.length === 0 ? (
         <p>No pending feedbacks</p>
       ) : (
         <>
-          <button className="approve-btn" onClick={handleApproveAll}>Approve All</button>
+          <button className="approve-btn" onClick={handleApproveAll}>
+            Approve All
+          </button>
+
           <table>
             <thead>
               <tr>
@@ -78,10 +89,12 @@ const PendingFeedbacks = () => {
                 <th>Rating</th>
                 <th>Submitted On</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
-              {feedbacks.map(f => (
+              {feedbacks.map((f) => (
                 <tr key={f.id}>
                   <td>{f.id}</td>
                   <td>{f.userName || "N/A"}</td>
@@ -90,7 +103,23 @@ const PendingFeedbacks = () => {
                   <td>{f.linesOfCode}</td>
                   <td>{f.rating}</td>
                   <td>{f.submittedOn ? new Date(f.submittedOn).toLocaleDateString() : "N/A"}</td>
-                  <td>{f.status}</td>
+
+                  <td style={{
+                      color: f.status === "Pending" ? "red" : "green",
+                      fontWeight: "600"
+                    }}
+                  >
+                    {f.status === "Pending" ? `⏳ ${f.status}` : `✅ ${f.status}`}
+                  </td>
+
+                  <td>
+                    <button
+                      className="approve-btn"
+                      onClick={() => handleApprove(f.id)}
+                    >
+                      Approve
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -101,4 +130,4 @@ const PendingFeedbacks = () => {
   );
 };
 
-export default PendingFeedbacks;
+export default ManagePendingFeedbacks;
